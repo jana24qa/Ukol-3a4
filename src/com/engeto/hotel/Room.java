@@ -9,7 +9,6 @@ public class Room {
     private boolean balconyRoom;
     private boolean seaViewRoom;
     private int pricePerNightInCzk;
-    private Guest guest;
 
     public Room(int roomId, int numberOfBeds, boolean balconyRoom, boolean seaViewRoom, int pricePerNight) {
         this.roomId = roomId;
@@ -19,9 +18,6 @@ public class Room {
         this.pricePerNightInCzk = pricePerNight;
     }
 
-    public Room(Guest guest) {
-        this.guest = guest;
-    }
 
     public int getRoomId() {
         return roomId;
@@ -63,13 +59,6 @@ public class Room {
         this.pricePerNightInCzk = pricePerNight;
     }
 
-    public Guest getGuest() {
-        return guest;
-    }
-
-    public void setGuest(Guest guest) {
-        this.guest = guest;
-    }
 
     public void getInfoAboutRooms() {
         System.out.println("Room Number: " + roomId);
