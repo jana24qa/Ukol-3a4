@@ -24,6 +24,9 @@ public class Booking {
         this.otherGuests = otherGuests;
     }
 
+    public static void add(Booking newBooking) {
+    }
+
     public List<Guest> getOtherGuests() {
         return otherGuests;
     }
