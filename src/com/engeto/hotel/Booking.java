@@ -12,6 +12,7 @@ public class Booking {
     private Room room;
     private Guest guest;
     private List<Guest> otherGuests;
+    private int numberOfGuests;
 
 
     public Booking(int bookingId, String typeOfVacation, LocalDate bookingFromDate, LocalDate bookingToDate, Room room, Guest guest, List<Guest> otherGuests) {
@@ -22,9 +23,11 @@ public class Booking {
         this.room = room;
         this.guest = guest;
         this.otherGuests = otherGuests;
+        this.numberOfGuests = numberOfGuests;
     }
 
     public static void add(Booking newBooking) {
+
     }
 
     public List<Guest> getOtherGuests() {
@@ -81,5 +84,13 @@ public class Booking {
 
     public void setGuest(Guest guest) {
         this.guest = guest;
+    }
+
+    public int getNumberOfGuests() {
+        return numberOfGuests;
+    }
+
+    public void setNumberOfGuests(int numberOfGuests) {
+        this.numberOfGuests = numberOfGuests;
     }
 }

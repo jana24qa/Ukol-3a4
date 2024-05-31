@@ -1,7 +1,4 @@
-import com.engeto.hotel.Booking;
-import com.engeto.hotel.Guest;
-import com.engeto.hotel.ListOfBookings;
-import com.engeto.hotel.Room;
+import com.engeto.hotel.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +24,7 @@ public class Main {
         System.out.println("                           ");
 
         Room room1 = new Room(1, 1, true, true, 1000);
-        Room room2 = new Room(2, 1, true, true,1000);
+        Room room2 = new Room(2, 1, true, true, 1000);
         Room room3 = new Room(3, 3, false, true, 2400);
 
         System.out.println("List of Rooms");
@@ -52,4 +49,5 @@ public class Main {
         listOfBookings.printAllBookings();
 
     }
+
 }
