@@ -8,9 +8,20 @@ import java.util.List;
 public class BookingManager {
     private List<Booking> bookings;
 
-    public void addBooking(Booking newBooking) {
-        Booking.add(newBooking);
+    public BookingManager(List<Booking> bookings) {
+        this.bookings = bookings;
     }
+
+
+    public BookingManager() {
+        this.bookings = new ArrayList<>();
+    }
+
+
+    public void addBooking(Booking newBooking) {
+        bookings.add(newBooking);
+    }
+
 
     public Booking getBooking(int index) {
         if (index >= 0 && index < bookings.size()) {
@@ -28,7 +39,6 @@ public class BookingManager {
         bookings.clear();
     }
 
-
     public int getNumberOfWorkingBookings () {
         int count = 0;
         for (Booking booking : bookings) {
@@ -38,7 +48,6 @@ public class BookingManager {
         }
         return count;
     }
-
 
     public double getAverageGuests() {
         if (bookings.isEmpty()) {
@@ -52,5 +61,6 @@ public class BookingManager {
 
         return (double) totalGuests / bookings.size();
     }
-
 }
+
+

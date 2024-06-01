@@ -1,6 +1,8 @@
 package com.engeto.hotel;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 public class Booking {
@@ -23,7 +25,7 @@ public class Booking {
         this.room = room;
         this.guest = guest;
         this.otherGuests = otherGuests;
-        this.numberOfGuests = numberOfGuests;
+        this.numberOfGuests = otherGuests.size();
     }
 
     public static void add(Booking newBooking) {
@@ -93,4 +95,50 @@ public class Booking {
     public void setNumberOfGuests(int numberOfGuests) {
         this.numberOfGuests = numberOfGuests;
     }
+
+    public LocalDate getStartDate() {
+        return bookingFromDate;
+    }
+
+    public LocalDate getEndDate() {
+        return bookingToDate;
+    }
+
+    public Guest getMainGuest() {
+        return guest;
+    }
+
+    public List<Guest> getGuests() {
+        return otherGuests;
+    }
+
+    public int calculateTotalPrice() {
+        long numberOfNights = ChronoUnit.DAYS.between(bookingFromDate, bookingToDate);
+        return (int) (numberOfNights * room.getPricePerNight());
+    }
+
+    public long getBookingLength() {
+        return ChronoUnit.DAYS.between(bookingFromDate, bookingToDate);
+    }
+
+    public int getPrice() {
+        long numberOfNights = getBookingLength();
+        return (int) (numberOfNights * room.getPricePerNight());
+    }
+
+
+    @Override
+    public String toString() {
+        return String.format("Rezervace ID: %d, Typ: %s, Od: %s, Do: %s, Hlavní host: %s %s, Počet hostů: %d, Pokoj: %d, Cena: %d Kč",
+                bookingId,
+                typeOfVacation,
+                bookingFromDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")),
+                bookingToDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")),
+                guest.getFirstName(),
+                guest.getLastName(),
+                otherGuests.size(),
+                room.getRoomId(),
+                calculateTotalPrice());
+    }
 }
+
