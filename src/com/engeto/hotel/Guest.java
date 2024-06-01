@@ -52,6 +52,4 @@ public class Guest {
         System.out.println(firstName + " " + lastName + " (" + dateOfBirth + ") ");
 
     }
-
-
 }

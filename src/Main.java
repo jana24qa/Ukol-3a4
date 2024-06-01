@@ -2,9 +2,10 @@ import com.engeto.hotel.Booking;
 import com.engeto.hotel.BookingManager;
 import com.engeto.hotel.Guest;
 import com.engeto.hotel.Room;
-import org.w3c.dom.ls.LSOutput;
+
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 
@@ -13,15 +14,14 @@ public class Main {
         BookingManager manager = new BookingManager();
         fillBookings(manager);
 
+        printAllBookings(manager);
+        printRecreationalBookings(manager, 8);
+        printGuestStatistics(manager);
+        printBookingDetails(manager);
 
-        // Pro testování - vypsání všech rezervací
         for (Booking booking : manager.getBookings()) {
             System.out.println(booking);
         }
-
-        // Testování dalších metod
-        System.out.println("Počet pracovních rezervací: " + manager.getNumberOfWorkingBookings());
-        System.out.println("Průměrný počet hostů na rezervaci: " + manager.getAverageGuests());
     }
 
     public static void fillBookings(BookingManager manager) {
@@ -48,9 +48,100 @@ public class Main {
             manager.addBooking(booking);
         }
 
-        Booking augustBooking = new Booking(bookingId, "Private", LocalDate.of(2023, 8, 1), LocalDate.of(2023, 8, 31), room3, guest5, List.of(guest5));
-        manager.addBooking(augustBooking);
+        Booking booking4 = new Booking(bookingId, "Private", LocalDate.of(2023, 8, 1), LocalDate.of(2023, 8, 31), room3, guest5, List.of(guest5));
+        manager.addBooking(booking4);
 
+        System.out.println("Počet pracovních rezervací: " + manager.getNumberOfWorkingBookings());
+        System.out.println("Průměrný počet hostů na rezervaci: " + manager.getAverageGuests());
+    }
+
+    public static void printAllBookings(BookingManager manager) {
+        List<Booking> bookings = manager.getBookings();
+        System.out.println("Seznam všech rezervací:");
+        for (Booking booking : bookings) {
+            LocalDate startDate = booking.getStartDate();
+            LocalDate endDate = booking.getEndDate();
+            Guest mainGuest = booking.getMainGuest();
+            int numberOfGuests = booking.getGuests().size();
+            String seaView = booking.getRoom().isSeaViewRoom() ? "ano" : "ne";
+            int totalPrice = booking.calculateTotalPrice();
+
+            System.out.printf("%s až %s: %s %s (%s)[%d, výhledNaMoře %s] za %d%n",
+                    startDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")),
+                    endDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")),
+                    mainGuest.getFirstName(), mainGuest.getLastName(),
+                    mainGuest.getDateOfBirth().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")),
+                    numberOfGuests, seaView, totalPrice);
+        }
+    }
+
+    public static void printRecreationalBookings(BookingManager manager, int numberOfBookings) {
+        List<Booking> bookings = manager.getBookings();
+        int count = 0;
+
+        System.out.println("Seznam prvních " + numberOfBookings + " rekreačních rezervací:");
+        for (Booking booking : bookings) {
+            if ("Private".equals(booking.getTypeOfVacation())) {
+                LocalDate startDate = booking.getStartDate();
+                LocalDate endDate = booking.getEndDate();
+                Guest mainGuest = booking.getMainGuest();
+                int numberOfGuests = booking.getGuests().size();
+                String seaView = booking.getRoom().isSeaViewRoom() ? "ano" : "ne";
+                int totalPrice = booking.calculateTotalPrice();
+
+                System.out.printf("%s až %s: %s %s (%s)[%d, výhledNaMoře %s] za %d Kč%n",
+                        startDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")),
+                        endDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")),
+                        mainGuest.getFirstName(), mainGuest.getLastName(),
+                        mainGuest.getDateOfBirth().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")),
+                        numberOfGuests, seaView, totalPrice);
+
+                count++;
+                if (count >= numberOfBookings) {
+                    break;
+                }
+            }
+        }
+
+        if (count == 0) {
+            System.out.println("Nenalezeny žádné rekreační rezervace.");
+        }
+    }
+
+
+    public static void printGuestStatistics(BookingManager manager) {
+        int oneGuestCount = 0;
+        int twoGuestsCount = 0;
+        int moreThanTwoGuestsCount = 0;
+
+        List<Booking> bookings = manager.getBookings();
+
+        for (Booking booking : bookings) {
+            int numberOfGuests = booking.getGuests().size();
+            if (numberOfGuests == 1) {
+                oneGuestCount++;
+            } else if (numberOfGuests == 2) {
+                twoGuestsCount++;
+            } else if (numberOfGuests > 2) {
+                moreThanTwoGuestsCount++;
+            }
+        }
+
+        System.out.println("Statistika hostů:");
+        System.out.println("Celkový počet rezervací s jedním hostem: " + oneGuestCount);
+        System.out.println("Celkový počet rezervací se dvěma hosty: " + twoGuestsCount);
+        System.out.println("Celkový počet rezervací s více než dvěma hosty: " + moreThanTwoGuestsCount);
+
+    }
+
+    public static void printBookingDetails(BookingManager manager) {
+        List<Booking> bookings = manager.getBookings();
+        System.out.println("Podrobnosti o rezervacích:");
+        for (Booking booking : bookings)
+            System.out.printf("Rezervace ID: %d, Délka pobytu: %d nocí, Celková cena: %d Kč%n",
+                    booking.getBookingId(),
+                    booking.getBookingLength(),
+                    booking.getPrice());
     }
 
 }
